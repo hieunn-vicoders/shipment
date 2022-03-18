@@ -62,7 +62,28 @@ class ShipmentController extends ApiController
     {
         $this->validator->isValid($request, 'RULE_ADMIN_CREATE');
 
-        $shipment = $this->repository->create($request->all());
+        $shipment = $this->entity->updateOrCreate(
+            ['shipmentable_id' => $request->get('shipmentable_id'), 'shipmentable_type' => $request->get('shipmentable_type')],
+            ['code' => $request->get('code'), "url" => $request->get('url'), "note" => $request->get('note'), "status" => $request->get('status')]
+        );
+
+        StatusHistory::record($shipment);
+
+        return $this->response->item($shipment, new $this->transformer);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validator->isValid($request, 'RULE_ADMIN_UPDATE');
+
+        $shipment = $this->repository->findById($id);
+
+        $shipment->update([
+            'code' => $request->get('code'),
+            'url' => $request->get('url'),
+            'note' => $request->get('note'),
+            'status' => $request->get('status'),
+        ]);
 
         StatusHistory::record($shipment);
 
@@ -82,5 +103,16 @@ class ShipmentController extends ApiController
         StatusHistory::record($shipment);
 
         return $this->success();
+    }
+
+    public function getStatuses()
+    {
+        $statuses = collect($this->entity::statuses())->map(function ($item, $key) {
+            return [
+                "name" => $item
+            ];
+        })->toArray();
+
+        return response()->json(["data" => $statuses]);
     }
 }

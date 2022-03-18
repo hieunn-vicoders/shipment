@@ -85,4 +85,68 @@ class ShipmentControllerTest extends TestCase
             'status'    => $data['status'],
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function can_get_shipment_statuses()
+    {
+        $response = $this->get("api/admin/shipments/statuses");
+        $response->assertSuccessful();
+        $statuses = collect(Shipment::statuses())->map(function ($item) {
+            return ["name" => $item];
+        })->toArray();
+        $response->assertJson(['data' => $statuses]);
+
+    }
+
+    /**
+     * @test
+     */
+    public function can_update_shipment()
+    {
+        $data = factory(Shipment::class)->create([
+            'shipmentable_type' => 'order_item'
+        ])->toArray();
+
+        $shipment = factory(Shipment::class)->make([
+            'shipmentable_type' => $data['shipmentable_type'],
+            'shipmentable_id'   => $data['shipmentable_id'],
+        ])->toArray();
+
+        $response = $this->put("api/admin/shipments/".$data['id'], $shipment);
+        $response->assertSuccessful();
+        $response->assertJson(['data' => $shipment]);
+        
+        $this->assertDatabaseHas('shipments', $shipment);
+        $this->assertDatabaseHas('shipment_status_histories', [
+            'shipment_id' => $data['id'],
+            'status'    => $shipment['status'],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_update_shipment_by_create_route()
+    {
+        $data = factory(Shipment::class)->create([
+            'shipmentable_type' => 'order_item'
+        ])->toArray();
+
+        $shipment = factory(Shipment::class)->make([
+            'shipmentable_type' => $data['shipmentable_type'],
+            'shipmentable_id'   => $data['shipmentable_id'],
+        ])->toArray();
+
+        $response = $this->post("api/admin/shipments/", $shipment);
+        $response->assertSuccessful();
+        $response->assertJson(['data' => $shipment]);
+        
+        $this->assertDatabaseHas('shipments', $shipment);
+        $this->assertDatabaseHas('shipment_status_histories', [
+            'shipment_id' => $data['id'],
+            'status'    => $shipment['status'],
+        ]);
+    }
 }

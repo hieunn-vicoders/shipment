@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shipment extends Model
 {
     protected $fillable = [
-        'shipment_code',
+        'code',
         'url',
         'note',
         'status',
@@ -23,5 +23,10 @@ class Shipment extends Model
     public function histories()
     {
         return $this->hasMany(ShipmentStatusHistory::class);
+    }
+
+    public static function statuses()
+    {
+        return [];
     }
 }

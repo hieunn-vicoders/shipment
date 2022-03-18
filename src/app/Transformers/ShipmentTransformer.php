@@ -21,7 +21,7 @@ class ShipmentTransformer extends TransformerAbstract
     {
         return [
             'id'            => (int) $model->id,
-            'shipment_code' => $model->shipment_code,
+            'code'          => $model->code,
             'url'           => $model->url,
             'note'          => $model->note,
             'status'        => $model->status,

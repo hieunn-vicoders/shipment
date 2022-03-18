@@ -15,9 +15,9 @@ class StatusHistory
         ]);
     }
 
-    public static function tracking($shipment_code)
+    public static function tracking($code)
     {
-        $shipment = Shipment::where('shipment_code', $shipment_code)->with('histories')->first();
+        $shipment = Shipment::where('code', $code)->with('histories')->first();
 
         return $shipment->histories;
     }

@@ -8,10 +8,13 @@ class ShipmentValidator extends AbstractValidator
 {
     protected $rules = [
         'RULE_ADMIN_CREATE' => [
-            'shipment_code'     => 'unique:shipments',
+            'code'              => 'unique:shipments',
             'status'            => 'required',
             'shipmentable_id'   => 'required',
             'shipmentable_type' => 'required',
+        ],
+        'RULE_ADMIN_UPDATE' => [
+            'status'            => 'required',
         ],
         'RULE_ADMIN_UPDATE_STATUS' => [
             'status'    => 'required',

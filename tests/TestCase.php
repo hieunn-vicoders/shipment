@@ -51,7 +51,7 @@ class TestCase extends OrchestraTestCase
         ]);
         $app['config']->set('shipment.namespace', 'shipment-management');
         $app['config']->set('shipment.models', [
-            'shipment' => \VCComponent\Laravel\Shipment\Entities\Shipment::class,
+            'shipment' => \VCComponent\Laravel\Shipment\Test\Stubs\Entities\Shipment::class,
             'shipment_status' => \VCComponent\Laravel\Shipment\Entities\ShipmentStatus::class,
             'shipment_status_history' => \VCComponent\Laravel\Shipment\Entities\ShipmentStatusHistory::class,
         ]);

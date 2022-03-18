@@ -6,7 +6,7 @@ use VCComponent\Laravel\Shipment\Test\Stubs\Entities\Shipment;
 
 $factory->define(Shipment::class, function (Faker $faker) {
     return [
-        'shipment_code'     => $faker->word,
+        'code'     => $faker->word,
         'url'               => $faker->url(),
         'note'              => $faker->paragraph(),
         'status'            => rand(1, 31),
