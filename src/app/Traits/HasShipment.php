@@ -14,4 +14,11 @@ trait HasShipment
             return $this->morphMany(Shipment::class, 'shipmentable');
         }
     }
+
+    protected static function bootShipmentActionableTrait()
+    {
+        self::deleting(function ($model) {
+            $model->shipments()->delete();
+        });
+    }
 }
